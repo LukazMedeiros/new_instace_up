@@ -1,22 +1,29 @@
-import axios from "axios";
+import express from "express";
 import { scheduleJob } from "node-schedule";
+import { login } from "./login";
+
+const SERVER = express();
+
+SERVER.get("/", async (request, response) => {
+  await login();
+  console.log(
+    "executado " +
+      new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })
+  );
+
+  return response.send(
+    "executado " +
+      new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })
+  );
+});
 
 scheduleJob("* */30 * * * *", async () => {
-  const payload = {
-    user_name: process.env.USER!,
-    user_password: process.env.PASSWORD!,
-    language_select: "en",
-  };
-
-  try {
-    await axios.post(process.env.URL!, payload);
-
-    console.log(
-      process.env.PORT +
-        " " +
-        new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })
-    );
-  } catch (error) {
-    console.error(error);
-  }
+  await login();
+  console.log(
+    "executado " +
+      new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })
+  );
+  return;
 });
+
+SERVER.listen(process.env.PORT);
