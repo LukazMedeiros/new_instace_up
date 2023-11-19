@@ -1,7 +1,7 @@
 import axios from "axios";
 import { scheduleJob } from "node-schedule";
 
-scheduleJob("*/30 * * * * *", async () => {
+scheduleJob("* */30 * * * *", async () => {
   const payload = {
     user_name: process.env.USER!,
     user_password: process.env.PASSWORD!,
@@ -12,7 +12,9 @@ scheduleJob("*/30 * * * * *", async () => {
     await axios.post(process.env.URL!, payload);
 
     console.log(
-      new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })
+      process.env.PORT +
+        " " +
+        new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_paulo" })
     );
   } catch (error) {
     console.error(error);
